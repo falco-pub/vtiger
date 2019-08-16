@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+
+  vtiger:
+    image: vtiger-crm:7.1.0
+    environment:
+      - VT_DEBUG=false
+      - DB_HOSTNAME=mysql
+      - DB_USERNAME=vtiger
+      - DB_PASSWORD=pwd
+      - DB_NAME=vtiger
+    ports:
+      - "80:80"
+    volumes:
+      - ./volumes/logs:/var/www/html/vtigercrm/logs
+      - ./volumes/storage:/var/www/html/vtigercrm/storage
+    links:
+      - mysql
+
+  mysql:
+    image: mysql-utf8:5.5
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=vtiger
+      - MYSQL_USER=vtiger
+      - MYSQL_PASSWORD=pwd
+    volumes:
+      - mysql:/var/lib/mysql:rw
+
+  adminer:
+    image: javanile/adminer
+    environment:
+      - MYSQL_DATABASE=vtiger
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "8081:8080"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - MYSQL_DATABASE=vtiger
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "8082:80"
+
+volumes:
+  mysql:
