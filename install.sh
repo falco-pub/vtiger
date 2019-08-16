@@ -1,4 +1,5 @@
 #!/bin/sh
+rm falco-pub -rf
 mkdir falco-pub
 cd falco-pub
 git clone https://github.com/falco-pub/vtiger-crm
