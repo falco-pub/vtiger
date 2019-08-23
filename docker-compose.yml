@@ -19,12 +19,13 @@ services:
       - mysql
 
   mysql:
-    image: mysql-utf8:5.5
+    image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=vtiger
       - MYSQL_USER=vtiger
       - MYSQL_PASSWORD=pwd
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
     volumes:
       - mysql:/var/lib/mysql:rw
 
