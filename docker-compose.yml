@@ -3,7 +3,7 @@ version: '3'
 services:
 
   vtiger:
-    image: vtiger-crm:7.1.0
+    image: vtiger:7.1.0
     environment:
       - VT_DEBUG=false
       - DB_HOSTNAME=mysql
