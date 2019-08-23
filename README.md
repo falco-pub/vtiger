@@ -1,6 +1,6 @@
 # vtiger
 
-# ![vtiger logo](https://www.vtiger.com/wp-content/uploads/2018/02/logo.png) vtiger
+# ![vtiger logo](https://www.vtiger.com/wp-content/uploads/2018/02/logo.png)
 
 Vtiger CRM is open source software that helps more than 100000 businesses grow sales,  
 improve marketing reach, and deliver great customer service. Try it free with Docker!
