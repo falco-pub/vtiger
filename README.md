@@ -15,8 +15,10 @@ docker-compose up
 The docker-compose file calls two persistent docker volumes :
 
  - `mysql` (bound to /var/lib/mysql/ in the `mysql` container).
+
  -- see **Step1.2** and **Step2.2** for how to properly backup and restore mysql database.
  - `crm` (bound to /var/www/html/vtigercrm/ in the `vtiger` container):
+
  -- see **Step1.1** and **Step2.1** for how to backup and restore that folder.
 
 Browse to `http://{your IP}`
@@ -25,8 +27,11 @@ Browse to `http://{your IP}`
 
 ### What vtiger needs to run correctly
  - vtiger in 'installed' state (usually in `/var/www/html/`), including:
+
  -- `vtigercrm/storage` folder, which contains user-uploaded files, like pictures
+
  -- optionnal additionnal modules
+
  - SQL database (it is populated during the installation)
         ***warning***: don't try to install vtiger with a non-empty SQL database, it will fail during installation since there already exist SQL records. In such case, export your SQL database to a dump file (see below, **Step1.2**), install vtiger on a fresh (empty) database (**Step0**), and load your previously created SQL dump file (**Step2.2**).
 
