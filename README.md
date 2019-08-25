@@ -89,7 +89,7 @@ docker run --rm -v vtiger_storage:/vol -v /tmp:/backup alpine sh -c "tar -C /vol
 #### 3. SQL database
 ```
 ./passsql.sh
-./restoresql.sh vtiger > sql_20190824.sql
+./restoresql.sh vtiger < sql_20190824.sql
 ```
 
 ### See also 
