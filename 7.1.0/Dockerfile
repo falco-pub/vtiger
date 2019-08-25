@@ -25,7 +25,7 @@ RUN chmod +x run.sh
 COPY docker-entrypoint.sh /entrypoint.sh
 
 EXPOSE 80
-#VOLUME ["/var/www/html/vtigercrm"]
+VOLUME ["/var/www/html/vtigercrm"]
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["./run.sh"]
 

@@ -30,7 +30,7 @@ Browse to `http://{your IP}`
 `./dumpsql.sh vtiger > file.sql` : dump the SQL "vtiger" database into the file `file.sql`
 `./restoresql.sh vtiger < file.sql` : load the SQL file `file.sql` into the "vtiger" database
 
-### Backup/restore the storage folder (or any other subfolder), from a running container
+### Backup/restore the vtigercrm/storage subfolder (or any other subfolder), from a running container
 Backup the `storage` folder from the `vtiger_vtiger_1` container, to the directory named `storage_backup_20190824`:
 ```
 docker ps
@@ -42,51 +42,54 @@ mv storage_backup_20190824 storage
 docker cp storage vtiger_vtiger_1:/var/www/html/vtigercrm
 ```
 
-### Backup/restore the storage folder, from a docker volume (the container may be shut down or even deleted)
-Find the correct docker volume name : `docker volume ls`
-Backup the content of the `vtiger_storage` volume to file `/tmp/storage.bz2`:
+### Backup/restore the `vtigercrm` folder, from a running container
+Backup the `vtigercrm` folder from the `vtiger_vtiger_1` container, to the directory named `vtigercrm_backup_20190824`:
 ```
-docker run --rm -v vtiger_storage:/vol -v /tmp:/backup alpine tar -cjf /backup/storage.bz2 -C /vol ./
+docker ps
+docker cp vtiger_vtiger_1:/var/www/html/vtigercrm vtigercrm_backup_20190824
 ```
-Restore from file `/tmp/storage.bz2` to the `vtiger_storage` docker volume:
+To restore (be sure of the right folder name):
 ```
-docker run --rm -v vtiger_storage:/vol -v /tmp:/backup alpine sh -c "tar -C /vol/ -xjf /backup/storage.bz2
+mv vtigercrm_backup_20190824 vtigercrm
+docker cp vtigercrm vtiger_vtiger_1:/var/www/html/vtigercrm
 ```
 
-### Perform a full backup step by step: full vtigercrm files ; storage folder ; SQL database
 
-#### 1. vtigercrm files, including modules: about ~ 180MB
+### Backup/restore the content of a docker volume (the container may be shut down or even deleted)
+Find the correct docker volume name : `docker volume ls`, eg: `vtiger_crm`
+
+Backup the content of the `vtiger_crm` volume to file `/tmp/crm.bz2`:
+```
+docker run --rm -v vtiger_crm:/vol -v /tmp:/backup alpine tar -cjf /backup/crm.bz2 -C /vol ./
+```
+Restore from file `/tmp/crm.bz2` to the `vtiger_crm` docker volume:
+```
+docker run --rm -v vtiger_crm:/vol -v /tmp:/backup alpine sh -c "tar -C /vol/ -xjf /backup/crm.bz2
+```
+
+### Perform a full backup: full vtigercrm files ; SQL database
+
+#### 1. vtigercrm files, including modules and storage: about ~ 180MB
 (running instance)
 ` docker ps`
 (find the correct container name, e.g. `vtiger_vtiger_1`)
 ```
 docker cp vtiger_vtiger_1:/var/www/html/vtigercrm vtigercrm_20190824`
 ```
-#### 2. storage folder (docker volume) if needed, to file /tmp/storage.bz2
-` docker volume ls`
-(find the correct volume name, e.g. `vtiger_storage`)
-```
-docker run --rm -v vtiger_storage:/vol -v /tmp:/backup alpine tar -cjf /backup/storage.bz2 -C /vol ./
-```
-#### 3. SQL database, to file sql_20190824.sql: about 1MB
+#### 2. SQL database, to file sql_20190824.sql: about 1MB
 ```
 ./passsql.sh
 ./dumpsql.sh vtiger > sql_20190824.sql
 ```
 
-### to perform a full restore, to a fresh vtiger container
+### Full restore, to a fresh-new vtiger container
 
-#### 1. vtigercrm files, including modules
+#### 1. vtigercrm files, including modules and storage
 ```
 mv vtigercrm_20190824 vtigercrm
 docker cp vtigercrm vtiger_vtiger_1:/var/www/html/
 ```
-#### 2. storage folder (docker volume) if needed
-You ned: an archive file (tar/gz/bz2) containing the storage files, eg: `/tmp/storage.bz2`
-```
-docker run --rm -v vtiger_storage:/vol -v /tmp:/backup alpine sh -c "tar -C /vol/ -xjf /backup/storage.bz2
-```
-#### 3. SQL database
+#### 2. SQL database
 ```
 ./passsql.sh
 ./restoresql.sh vtiger < sql_20190824.sql

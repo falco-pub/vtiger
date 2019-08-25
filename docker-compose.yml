@@ -13,8 +13,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./volumes/logs:/var/www/html/vtigercrm/logs
-      - ./volumes/storage:/var/www/html/vtigercrm/storage
+      - crm:/var/www/html/vtigercrm
     links:
       - mysql
 
@@ -48,3 +47,4 @@ services:
 
 volumes:
   mysql:
+  crm:
